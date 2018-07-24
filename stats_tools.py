@@ -328,6 +328,11 @@ def plot_polygon(
     Args:
         boundary_points: shape 2 x many, no repeat at wraparound. First row is
           x values, second is y values.
+        edgecolor: edge color.
+        facecolor: face color, 'none' => transparent interior.
+        alpha: close to 0.0 => transparent, close to 1.0 => opaque.
+        linewidth: usu. 3.0 or greater for good visibility.
+        linestyle: e.g. '-', '--', or ':'.
         zorder: higher => closer to foreground.
     '''
     plt.fill(
@@ -352,6 +357,8 @@ def plot_error_ellipse(
         mean: distribution's mean (length 2).
         cov: distribution's covariance (2x2).
         acceptance: amount of probability mass ellipse should contain.
+        num_points: number of points to sample on ellipse. This is a measure of
+          plotting resolution.
         edgecolor: edge color.
         facecolor: face color, 'none' => transparent interior.
         alpha: close to 0.0 => transparent, close to 1.0 => opaque.
