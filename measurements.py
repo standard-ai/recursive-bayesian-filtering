@@ -209,4 +209,5 @@ class PositionMeasurement(DifferentiableMeasurement):
 
     def copy(self) -> 'PositionMeasurement':
         '''Deepcopy.'''
-        return PositionMeasurement(self._mean, self._cov, self._time)
+        return PositionMeasurement(
+            self._mean, self._cov, self._time, self._frame_num)
