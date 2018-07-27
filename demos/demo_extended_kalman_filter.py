@@ -47,12 +47,9 @@ def main():
     plt.rcParams['figure.figsize'] = 10, 10  # Set default fig size.
 
     # Discrete times.
-    t0 = 0.0  # Initial time.
     framerate = 100  # fps.
-    dt = 1.0/framerate  # seconds per frame.
+    dt = 1.0/framerate  # seconds between consecutive frames.
     num_frames = 10  # Includes initial frame.
-    t_ubnd = t0 + dt*(num_frames - 1)
-    ts = np.linspace(t0, t_ubnd, num_frames)
 
     # Dynamic model.
     d = 4  # Planar NCV state space dimension.
@@ -75,7 +72,7 @@ def main():
     dzs = stm.sample_from_normal_distribution(
         cov=R, cov_cholesky=R_cholesky, num_samples=num_frames)
     frame_num = 0
-    for x, dz, t in zip(xs_truth.T, dzs.T, ts):
+    for x, dz in zip(xs_truth.T, dzs.T):
         z = x[:d//2] + dz
         measurements.append(
             mm.PositionMeasurement(mean=z, cov=R, frame_num=frame_num))
