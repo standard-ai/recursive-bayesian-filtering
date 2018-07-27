@@ -63,9 +63,9 @@ def main():
     theta0_truth = 0.0  # True initial heading.
     xs_truth[:, 0] = \
         np.array((0.0, 0.0, np.cos(theta0_truth), np.sin(theta0_truth)))
-    for i in range(1, num_frames):
+    for frame_num in range(1, num_frames):
         dx = ncv.sample_process_noise(dt)
-        xs_truth[:, i] = ncv(xs_truth[:, i-1], dt=dt) + dx
+        xs_truth[:, frame_num] = ncv(xs_truth[:, frame_num-1], dt=dt) + dx
 
     # Measurements.
     # Max error 0.1 m => use 0.05 as standard deviation => 0.0025 variance.
@@ -74,9 +74,12 @@ def main():
     R_cholesky = np.linalg.cholesky(R)
     dzs = stm.sample_from_normal_distribution(
         cov=R, cov_cholesky=R_cholesky, num_samples=num_frames)
+    frame_num = 0
     for x, dz, t in zip(xs_truth.T, dzs.T, ts):
         z = x[:d//2] + dz
-        measurements.append(mm.PositionMeasurement(mean=z, cov=R, time=t))
+        measurements.append(
+            mm.PositionMeasurement(mean=z, cov=R, frame_num=frame_num))
+        frame_num += 1
 
     # State estimates.
     x0 = np.zeros(d)
@@ -86,7 +89,7 @@ def main():
     ekf_states = []
     for i, measurement in enumerate(measurements):
         ekf_state = ekf_state_last.copy()
-        ekf_state.predict(dt=dt, destination_time=measurement.time)
+        ekf_state.predict(dt=dt, destination_frame_num=measurement.frame_num)
         dz, S = ekf_state.update(measurement=measurement)
         ekf_states.append(ekf_state)
         ekf_state_last = ekf_state
