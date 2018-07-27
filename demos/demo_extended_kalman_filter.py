@@ -85,9 +85,9 @@ def main():
     x0 = np.zeros(d)
     P0 = 100.0*np.eye(d)
     ekf_state_last = ekfm.EKFState(
-        dynamic_model=ncv, mean=x0, cov=P0, time=t0)
+        dynamic_model=ncv, mean=x0, cov=P0, frame_num=0)
     ekf_states = []
-    for i, measurement in enumerate(measurements):
+    for measurement in measurements:
         ekf_state = ekf_state_last.copy()
         ekf_state.predict(dt=dt, destination_frame_num=measurement.frame_num)
         dz, S = ekf_state.update(measurement=measurement)
