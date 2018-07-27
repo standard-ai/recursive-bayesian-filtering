@@ -67,7 +67,7 @@ def test_EKFState_with_NcpContinuous():
 
     ekf_state.init(2*x, 2*P, t)
     ekf_state1 = ekf_state.copy()
-    ekf_state1.predict(dt)
+    ekf_state1.predict(dt, destination_time=t + dt)
     assert ekf_state1.dynamic_model.__class__ == dmm.NcpContinuous
 
     measurement = mm.PositionMeasurement(
@@ -115,7 +115,7 @@ def test_EKFState_with_NcvContinuous():
 
     ekf_state.init(2*x, 2*P, t)
     ekf_state1 = ekf_state.copy()
-    ekf_state1.predict(dt)
+    ekf_state1.predict(dt, destination_time=t + dt)
     assert ekf_state1.dynamic_model.__class__ == dmm.NcvContinuous
 
     measurement = mm.PositionMeasurement(

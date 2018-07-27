@@ -86,7 +86,7 @@ def main():
     ekf_states = []
     for i, measurement in enumerate(measurements):
         ekf_state = ekf_state_last.copy()
-        ekf_state.predict(dt=None, destination_time=measurement.time)
+        ekf_state.predict(dt=dt, destination_time=measurement.time)
         dz, S = ekf_state.update(measurement=measurement)
         ekf_states.append(ekf_state)
         ekf_state_last = ekf_state

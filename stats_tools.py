@@ -277,7 +277,8 @@ def generate_error_ellipse_points(
         cov: np.ndarray,
         cov_cholesky: np.ndarray = None,
         acceptance: float = 0.99,
-        num_points: int = 30) -> np.ndarray:
+        num_points: int = 30,
+        format: str = 'matplotlib') -> np.ndarray:
     '''
     Generate points on a level set of a bivariate Gaussian PDF, usu. for
     plotting error ellipses.
@@ -290,6 +291,11 @@ def generate_error_ellipse_points(
         acceptance: probability mass that ellipse should contain around mean.
         num_points: number of points to sample on ellipse. This is a measure of
           plotting resolution.
+        format: use 'matplotlib' for points output as a `float64` numpy array
+          with rows running over x and y physical dimensions, columns over
+          points. Use 'opencv' for points output as a `uint32` numpy array with
+          rows running over points and columns running over x and y pixel
+          dimensions.
 
     Returns:
         Shape (2, num_points) array of points for plotting.
@@ -314,7 +320,12 @@ def generate_error_ellipse_points(
     for i in range(num_points):
         points[:, i] = cov_cholesky.dot(points[:, i]) + mean
 
-    return points
+    if format == 'matplotlib':
+        return points
+    elif format == 'opencv':
+        return points.T.astype(np.int32)
+    else:
+        assert False, 'Format not recognized!'
 
 
 def plot_polygon(
@@ -356,6 +367,8 @@ def plot_error_ellipse(
     Args:
         mean: distribution's mean (length 2).
         cov: distribution's covariance (2x2).
+        cov_cholesky: optionally precomputed cholesky factorization, as output
+          from `np.linalg.cholesky(cov)`.
         acceptance: amount of probability mass ellipse should contain.
         num_points: number of points to sample on ellipse. This is a measure of
           plotting resolution.
@@ -367,7 +380,7 @@ def plot_error_ellipse(
         zorder: higher => closer to foreground.
 
     Returns:
-        list of ...?
+        list of polygons.
     '''
     if cov_cholesky is None:
         cov_cholesky = np.linalg.cholesky(cov)

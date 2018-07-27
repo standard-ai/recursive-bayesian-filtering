@@ -36,16 +36,17 @@ import measurements as mm
 def test_PositionMeasurement():
     dimension = 3
     time = 0.232
+    frame_num = 5
     measurement = mm.PositionMeasurement(
         mean=np.random.random(dimension),
-        cov=np.eye(dimension),
-        time=time)
+        cov=np.eye(dimension), time=time, frame_num=frame_num)
     assert measurement.dimension == dimension
     x = np.random.random(2*dimension)
     assert measurement(x).shape == (dimension,)
     assert measurement.mean.shape == (dimension,)
     assert measurement.cov.shape == (dimension, dimension)
     assert measurement.time == time
+    assert measurement.frame_num == frame_num
     assert measurement.geodesic_difference(
         np.random.random(dimension), np.random.random(dimension)).shape \
         == (dimension,)

@@ -5,6 +5,8 @@ A sanitized, open-source subset of Standard Cognition's filtering library.
 
 ## Running the EKF Demo
 
+Make sure `numpy`, `scipy`, and `matplotlib` are installed.  
+
 Set the python path.  
 ```
 $ source ./init_path.sh

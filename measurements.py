@@ -28,6 +28,7 @@ SOFTWARE.
 # pylint: disable=W0611, R0201, W0613, E0602
 
 # Standard
+from typing import Optional
 from abc import ABC, abstractmethod
 
 # Scientific Computing
@@ -47,15 +48,24 @@ class Measurement(ABC):
     Args:
         mean: mean of measurement distribution.
         cov: covariance of measurement distribution.
-        time: time of measurement.
+        time: optional continuous time of measurement. If this is not provided,
+          `frame_num` must be.
+        frame_num: optional discrete time of measurement. If this is not
+          provided, `time` must be.
     '''
-    def __init__(self, mean: np.ndarray, cov: np.ndarray, time: float):
+    def __init__(
+            self, mean: np.ndarray, cov: np.ndarray,
+            time: float = None, frame_num: int = None):
         self._dimension = len(mean)
         self._mean = mean.copy()
         self._mean.flags.writeable = False
         self._cov = cov.copy()
         self._cov.flags.writeable = False
+
+        assert not (time is None and frame_num is None), \
+            'Must provided either `time` or `frame_num`!'
         self._time = time
+        self._frame_num = frame_num
 
     @property
     def dimension(self) -> int:
@@ -73,9 +83,14 @@ class Measurement(ABC):
         return self._cov
 
     @property
-    def time(self) -> float:
-        '''Time of measurement.'''
+    def time(self) -> Optional[float]:
+        '''Continuous measurement time access.'''
         return self._time
+
+    @property
+    def frame_num(self) -> Optional[int]:
+        '''Discrete measurement time access.'''
+        return self._frame_num
 
     @abstractmethod
     def __call__(
@@ -148,11 +163,15 @@ class PositionMeasurement(DifferentiableMeasurement):
     Args:
         mean: mean of measurement distribution.
         cov: covariance of measurement distribution.
-        time: time of measurement.
+        time: optional continuous time of measurement. If this is not provided,
+          `frame_num` must be.
+        frame_num: optional discrete time of measurement. If this is not
+          provided, `time` must be.
     '''
     def __init__(
-            self, mean: np.ndarray, cov: np.ndarray, time: float):
-        super().__init__(mean, cov, time)
+            self, mean: np.ndarray, cov: np.ndarray,
+            time: float = None, frame_num: int = None):
+        super().__init__(mean, cov, time, frame_num)
         self._jacobian = np.hstack((
             np.eye(self.dimension),
             np.zeros((self.dimension, self.dimension))))
