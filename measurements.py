@@ -45,6 +45,15 @@ class Measurement(ABC):
     '''
     Gaussian measurement interface.
 
+    Instance Variables:
+        _dimension: dimension of measurement space.
+        _mean: mean of measurement.
+        _cov: covariance of measurement.
+        _time: optional continuous time of measurement. If this is not set,
+          `_frame_num` must be.
+        _frame_num: optional discrete time of measurement. If this is not set,
+          `_time` must be.
+
     Args:
         mean: mean of measurement distribution.
         cov: covariance of measurement distribution.
@@ -134,6 +143,9 @@ class DifferentiableMeasurement(Measurement):
     '''
     Interface for Gaussian measurement for which Jacobians can be efficiently
     calculated, usu. analytically or by automatic differentiation.
+
+    Instance Variables (in addition to those of `Measurement`):
+        _jacobian: Jacobian matrix of the map from PV space to P space.
     '''
     @abstractmethod
     def jacobian(self, x: np.ndarray = None) -> np.ndarray:
@@ -196,7 +208,7 @@ class PositionMeasurement(DifferentiableMeasurement):
     def jacobian(self, x: np.ndarray = None) -> np.ndarray:
         '''
         Compute and return Jacobian (H) of measurement map (h) at target PV
-        state `x` .
+        state `x`.
 
         Args:
             x: PV state. The default argument `None` may be used in this
