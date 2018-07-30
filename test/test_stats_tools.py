@@ -43,11 +43,6 @@ plt.rcParams['figure.figsize'] = 7, 7  # Default fig size.
 import stats_tools as stm
 
 
-visual_test_results_path = 'test/visuals/'
-if not os.path.exists(visual_test_results_path):
-    os.makedirs(visual_test_results_path)
-
-
 def test_assert_and_enforce_cov_validity():
     # Correct scalar
     P = 1.0
@@ -228,6 +223,8 @@ def test_plot_error_ellipse():
     '''
     Indirectly tests also `generate_error_ellipse_points` and
     `plot_polygon`.
+
+    Cf. `../demos/demo_error_ellipse_plot.py`.
     '''
     plt.clf()
 
@@ -258,45 +255,3 @@ def test_plot_error_ellipse():
         mean, cov, cov_cholesky, acceptance, boundary_num_points,
         edgecolor='k', facecolor='m', alpha=0.5,
         linewidth=3.0, linestyle='solid', zorder=0)
-
-    # Verify ellipse with scatter samples.
-    samples = stm.sample_from_normal_distribution(
-        mean=mean, cov=cov,
-        cov_cholesky=cov_cholesky, num_samples=scatter_num_points)
-    #
-    # Color samples in and outside of 1-sigma ellipse differently.
-    x_passed_samples = []
-    y_passed_samples = []
-    x_failed_samples = []
-    y_failed_samples = []
-    chi2_threshold = chi2.ppf(acceptance, df=2)
-    for sample in samples.T:
-        # Check quadratic form against acceptance.
-        z = sample - mean
-        chi2_stat = np.dot(z.T, np.linalg.solve(cov, z))
-        if chi2_stat <= chi2_threshold:
-            x_passed_samples.append(sample[0])
-            y_passed_samples.append(sample[1])
-        else:
-            x_failed_samples.append(sample[0])
-            y_failed_samples.append(sample[1])
-    plt.scatter(
-        x_passed_samples, y_passed_samples,
-        marker='.', color='g', s=5.4, zorder=10)
-    plt.scatter(
-        x_failed_samples, y_failed_samples,
-        marker='.', color='r', s=5.4, zorder=10)
-
-    # Plot Formatting
-    r_plot = 4.0
-    plt.xlim((mean[0]-r_plot, mean[0]+r_plot))
-    plt.ylim((mean[1]-r_plot, mean[1]+r_plot))
-    plt.grid(True)
-    plt.title(
-        'Test of Error Ellipse Plotting',
-        fontsize=16, fontweight='bold')
-    plt.xlabel('x', fontsize=14, fontweight='bold')
-    plt.ylabel('y', fontsize=14, fontweight='bold')
-    ax.margins(0.1)
-    plt.grid(True)
-    plt.savefig(visual_test_results_path + 'test_plot_error_ellipse.png')
