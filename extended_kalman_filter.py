@@ -325,10 +325,33 @@ class EKFState:
 
         return dz, S
 
-    def copy(self) -> 'EKFState':
+    def copy(self, time: float = None, frame_num: int = None) -> 'EKFState':
         '''
         Deepcopy everything, except dynamic model is only shallow-copied.
+
+        Optionally `time` and/or `frame_num` can be reset. This is useful,
+        e.g., if you want to cache an intial filter state that can be copied
+        into newly initialized tracks at different times.
+
+        Args:
+            time: optional new continuous state time.
+            frame_num: optional new discrete state time.
+
+        Returns:
+            new filter state
         '''
+        if time is not None and frame_num is None:
+            return EKFState(
+                dynamic_model=self._dynamic_model,
+                mean=self._mean, cov=self._cov,
+                time=time, frame_num=None)
+
+        if time is None and frame_num is not None:
+            return EKFState(
+                dynamic_model=self._dynamic_model,
+                mean=self._mean, cov=self._cov,
+                time=None, frame_num=frame_num)
+
         return EKFState(
             dynamic_model=self._dynamic_model,
             mean=self._mean, cov=self._cov,
