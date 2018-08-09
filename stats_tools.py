@@ -35,6 +35,23 @@ from matplotlib import pyplot as plt
 from matplotlib import patches
 
 
+# ----- Misc. -----
+
+
+def det(A: np.ndarray) -> float:
+    '''
+    Evaluate determinant of a matrix A. Use direct formula for speedup in 2x2
+    special case. For speed, input validity is not checked.
+    '''
+    if A.shape[0] == 2:
+        determinant = A[0, 0]*A[1, 1] - A[0, 1]*A[1, 0]
+    else:
+        determinant = np.linalg.det(A)
+    return determinant
+
+
+
+
 # ----- Multivariate Normal Distributions -----
 
 
@@ -206,7 +223,7 @@ def evaluate_normal_pdf(
         delta = x - mean
 
     if dimension > 1:
-        k = (2.0*np.pi)**(-0.5*dimension)*np.linalg.det(cov)**(-0.5)
+        k = (2.0*np.pi)**(-0.5*dimension)*det(cov)**(-0.5)
         quadratic = delta.dot(np.linalg.solve(cov, delta))
         p = k*np.exp(-0.5*quadratic)
     else:

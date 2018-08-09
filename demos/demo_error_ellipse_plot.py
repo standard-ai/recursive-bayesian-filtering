@@ -26,7 +26,7 @@ def main():
 
     acceptance = 0.8
     boundary_num_points = 50
-    scatter_num_points = 2000
+    num_samples = 2000
 
     # Mean
     mean = np.array([2.4, 8.8])
@@ -55,9 +55,9 @@ def main():
     # Verify ellipse with scatter samples.
     samples = stm.sample_from_normal_distribution(
         mean=mean, cov=cov,
-        cov_cholesky=cov_cholesky, num_samples=scatter_num_points)
+        cov_cholesky=cov_cholesky, num_samples=num_samples)
     #
-    # Color samples in and outside of 1-sigma ellipse differently.
+    # Color samples in and outside of ellipse differently.
     x_passed_samples = []
     y_passed_samples = []
     x_failed_samples = []
