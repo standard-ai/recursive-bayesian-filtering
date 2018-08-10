@@ -27,7 +27,6 @@ SOFTWARE.
 # pylint: disable=C0413, R0915
 
 # Standard
-import os
 from sys import float_info  # for float_info.epsilon
 import pytest
 

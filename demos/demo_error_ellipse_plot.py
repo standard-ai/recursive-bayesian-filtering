@@ -4,8 +4,6 @@
 
 # Standard
 import time
-from sys import float_info  # for float_info.epsilon
-from pprint import pprint
 
 # Scientific Computing and Visualization
 import numpy as np
