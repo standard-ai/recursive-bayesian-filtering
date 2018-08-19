@@ -31,7 +31,7 @@ SOFTWARE.
 from typing import Optional
 from abc import ABC, abstractmethod
 
-# Scientific Computing
+# Scientific
 import numpy as np
 
 # Custom

@@ -26,14 +26,14 @@ SOFTWARE.
 '''
 # pylint: disable=W0611
 
-# Standard.
+# Standard
 import time
 
-# Scientific Computing and Visualization.
+# Scientific
 import numpy as np
 from matplotlib import pyplot as plt
 
-# Custom.
+# Custom
 import stats_tools as stm
 import dynamic_models as dmm
 import measurements as mm

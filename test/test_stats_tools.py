@@ -30,7 +30,7 @@ SOFTWARE.
 from sys import float_info  # for float_info.epsilon
 import pytest
 
-# Scientific Computing
+# Scientific
 import numpy as np
 from scipy.stats import chi2
 from scipy.stats import entropy

@@ -5,7 +5,7 @@
 # Standard
 import time
 
-# Scientific Computing and Visualization
+# Scientific
 import numpy as np
 from scipy.stats import chi2
 import matplotlib

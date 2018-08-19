@@ -29,7 +29,7 @@ SOFTWARE.
 # Standard
 import pytest
 
-# Scientific Computing
+# Scientific
 import numpy as np
 from matplotlib import pyplot as plt
 plt.rcParams['figure.figsize'] = 7, 7  # Default fig size.

@@ -28,7 +28,7 @@ SOFTWARE.
 from sys import float_info  # for float_info.epsilon
 from typing import Union, Tuple, List
 
-# Scientific Computing
+# Scientific
 import numpy as np
 from scipy.stats import chi2
 from matplotlib import pyplot as plt

@@ -30,7 +30,7 @@ SOFTWARE.
 # Standard
 from typing import Optional, Tuple
 
-# Scientific Computing
+# Scientific
 import numpy as np
 
 # Custom

@@ -27,7 +27,7 @@ SOFTWARE.
 # Standard
 import unittest
 
-# Scientific Computing
+# Scientific
 import numpy as np
 
 # Custom

@@ -26,7 +26,7 @@ SOFTWARE.
 # Standard
 # import pytest
 
-# Scientific Computing
+# Scientific
 import numpy as np
 
 # Custom
