@@ -197,7 +197,7 @@ class EKFState:
               `destination_frame_num` must be.
             destination_frame_num: optional value to set discrete state time to
               after integration. If this is not provided, then
-              `destination_frame_num` must be.
+              `destination_time` must be.
         '''
         self._mean = self._dynamic_model(self._mean, dt)
         self._mean.flags.writeable = False
